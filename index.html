@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多周期交易系统完整规则</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7f9;
+        }
+        h1 { border-bottom: 2px solid #2c3e50; padding-bottom: 10px; color: #2c3e50; text-align: center; }
+        h2 { background: #2c3e50; color: #fff; padding: 10px 15px; border-radius: 5px; margin-top: 40px; }
+        h3 { border-left: 5px solid #3498db; padding-left: 10px; margin-top: 30px; color: #2980b9; }
+        
+        /* 表格样式 */
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: #fff; }
+        th, td { border: 1px solid #dfe6e9; padding: 12px; text-align: left; }
+        th { background-color: #f8f9fa; color: #2c3e50; }
+        
+        /* 引用/警告框 */
+        blockquote {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            margin: 20px 0;
+            padding: 15px;
+            font-style: italic;
+        }
+        .flowchart {
+            background: #2d3436;
+            color: #dfe6e9;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: "Courier New", Courier, monospace;
+            white-space: pre-wrap;
+            line-height: 1.4;
+            overflow-x: auto;
+        }
+        
+        /* 图片占位符样式 */
+        .image-container {
+            background: #e9ecef;
+            border: 2px dashed #ced4da;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .image-caption {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: -15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .highlight { color: #e74c3c; font-weight: bold; }
+        .tag {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>多周期交易系统完整规则</h1>
+    
+    <blockquote>
+        本系统包含三个阶段：<strong>纯均线交易</strong> → <strong>均线+力度K过渡</strong> → <strong>纯裸K交易</strong>
+    </blockquote>
+
+    <hr>
+
+    <h2>第一阶段：纯均线多周期交易系统</h2>
+    
+    <h3>📊 基础设置</h3>
+    <table>
+        <tr><th>参数</th><th>设置</th></tr>
+        <tr><td>均线类型</td><td>EMA（指数移动平均线）</td></tr>
+        <tr><td>均线参数</td><td><strong>5（黄线）、13（粉线）、55（绿线）</strong></td></tr>
+        <tr><td>进场周期</td><td>5分钟（可选3/10/15分钟，需保持倍数关系）</td></tr>
+        <tr><td>过滤周期</td><td>15分钟 + 30分钟</td></tr>
+    </table>
+
+    <h3>🔻 第一层过滤：30分钟周期（方向确认）</h3>
+    <ul>
+        <li><strong>做多条件：</strong>黄线(5) > 粉线(13) → <span class="highlight">多头排列</span></li>
+        <li><strong>做空条件：</strong>黄线(5) < 粉线(13) → <span class="highlight">空头排列</span></li>
+    </ul>
+    <blockquote>⚠️ 30分钟只看均线排列状态，确定大方向</blockquote>
+
+    <h3>🔻 第二层过滤：15分钟周期（双重确认）</h3>
+    <p><strong>做多条件（必须同时满足）：</strong></p>
+    <ol>
+        <li>均线黄粉金叉：黄线(5) 上穿 粉线(13) 或 黄线在粉线上方</li>
+        <li>MACD金叉：MACD快线(DIF) 上穿 慢线(DEA) 或 DIF在DEA上方</li>
+    </ol>
+    <p><strong>做空条件（必须同时满足）：</strong></p>
+    <ol>
+        <li>均线黄粉死叉：黄线(5) 下穿 粉线(13) 或 黄线在粉线下方</li>
+        <li>MACD死叉：MACD快线(DIF) 下穿 慢线(DEA) 或 DIF在DEA下方</li>
+    </ol>
+
+    <h3>🔻 第三层进场：5分钟周期（精确进场）</h3>
+    
+    <div class="image-container">
+        <img src="https://github.com/ChirsYg/jishi/blob/main/pic/1.jpeg?raw=true" alt="图1-5分钟均线进场规则" style="max-width:100%;">
+        <p>![图1-5分钟均线进场规则](1.jpeg)</p>
+    </div>
+    <div class="image-caption">
+        <strong>图示说明：</strong>黄线5EMA, 粉线13EMA, 绿线55EMA。标注1-2-3结构，价格触碰绿线并突破粉线进场。
+    </div>
+
+    <table>
+        <tr><th>规则</th><th>做多条件说明</th><th>做空条件说明</th></tr>
+        <tr><td>规则一</td><td>粉线13 > 绿线55（多排）</td><td>粉线13 < 绿线55（空排）</td></tr>
+        <tr><td>规则二</td><td colspan="2">价格必须<strong>触碰绿线</strong>（可以穿透，但必须触碰）</td></tr>
+        <tr><td>规则三</td><td>收盘价 > 粉线进场</td><td>收盘价 < 粉线进场</td></tr>
+        <tr><td>规则四</td><td colspan="2">1到2回调过程中，粉绿线排列<strong>不能变化</strong></td></tr>
+    </table>
+
+    <div class="flowchart">
+┌─────────────────────────────────────────────────────┐
+│                  30分钟周期检查                      │
+│         做多：均线黄粉金叉5 > 13 多头排列             │
+│         做空：均线黄粉死叉5 < 13 空头排列             │
+└─────────────────────┬───────────────────────────────┘
+                      │ ✓ 通过
+                      ▼
+┌─────────────────────────────────────────────────────┐
+│                  15分钟周期检查                      │
+│做多：黄粉金叉(5) > (13) + MACD金叉（双金叉）          │
+│做空：黄粉死叉(5) < (13) + MACD死叉（双死叉）          │
+└─────────────────────┬───────────────────────────────┘
+                      │ ✓ 通过
+                      ▼
+┌─────────────────────────────────────────────────────┐
+│                   5分钟周期进场                      │
+│  1. 均线粉(13)绿线(55)保持正确排列                   │
+│  2. 价格接近或触碰绿线(55)                           │
+│  3. 收盘价突破粉线(13)方向正确时进场                  │
+│  4. 回调过程中排列不变                               │
+└─────────────────────────────────────────────────────┘
+    </div>
+
+    <h2>第二阶段：均线 + 力度K 过渡系统</h2>
+    <blockquote>🔑 <strong>核心变化：</strong>找到力度K后，即使15/30分钟条件不完全满足也可以进场。</blockquote>
+
+    <h3>🔻 力度K线识别</h3>
+    <div class="image-container">
+        <img src="https://github.com/ChirsYg/jishi/blob/main/pic/2.jpeg?raw=true" alt="图2-力度K定义" style="max-width:100%;">
+        <p>![图2-力度K定义](2.jpeg)</p>
+    </div>
+    <div class="image-caption"><strong>图示说明：</strong>博弈区（阴阳交错）后出现的决定性大K线即为力度K。</div>
+
+    <table>
+        <tr><th>特征</th><th>说明</th></tr>
+        <tr><td>博弈区识别</td><td>阴阳线叠加在一起的区域（多空争夺）</td></tr>
+        <tr><td>力度K确认</td><td>博弈区后出现实体大于平均ATR的大阴/大阳线</td></tr>
+        <tr><td>有效性</td><td>⚠️ <strong>只有在博弈后出现</strong>的力度K才算数</td></tr>
+    </table>
+
+    <h3>🔻 过渡阶段进场方法</h3>
+    <div class="image-container">
+        <img src="https://github.com/ChirsYg/jishi/blob/main/pic/3.jpeg?raw=true" alt="图3-15分钟力度K+5分钟均线信号" style="max-width:100%;">
+        <p>![图3-均线过渡到裸K](3.jpeg)</p>
+    </div>
+    <p><strong>进场逻辑：</strong>在大周期（15/30min）确定力度K方向，在小周期（5min）按均线规则寻找触碰绿线后的突破信号。此阶段止损设在力度K的高/低点。</p>
+
+    <h2>第三阶段：纯裸K交易系统</h2>
+    <blockquote>🔑 <strong>核心变化：</strong>删除均线，专注于裸K形态、关键位置（共振点）和力度K。</blockquote>
+
+    <h3>🔻 纯裸K进场方法（5分钟）</h3>
+    <div class="image-container">
+        <img src="https://github.com/ChirsYg/jishi/blob/main/pic/4.jpeg?raw=true" alt="图4-纯裸K进场" style="max-width:100%;">
+        <p>![图4-纯裸K进场](4.jpeg)</p>
+    </div>
+
+    <table>
+        <tr><th>条件</th><th>说明</th></tr>
+        <tr><td>多周期力度K共振</td><td>15分钟和5分钟同时出现力度K</td></tr>
+        <tr><td>共振点识别</td><td>价格回调到左侧高低点同一水平位置（支撑/压力）</td></tr>
+        <tr><td>进场信号</td><td>共振点出现反向K线即可进场</td></tr>
+        <tr><td>止损设置</td><td>力度K高点上方（空）或低点下方（多）</td></tr>
+    </table>
+
+    <h2 style="background: #27ae60;">📌 三阶段进化总结</h2>
+    <table>
+        <tr style="background: #f1f2f6;">
+            <th>阶段</th>
+            <th>特点</th>
+            <th>大周期作用</th>
+            <th>进场依据</th>
+        </tr>
+        <tr>
+            <td><strong>纯均线</strong></td>
+            <td>严格过滤</td>
+            <td>均线排列+MACD</td>
+            <td>触碰绿线，突破粉线</td>
+        </tr>
+        <tr>
+            <td><strong>均线+力度K</strong></td>
+            <td>条件放宽</td>
+            <td>力度K定方向</td>
+            <td>均线信号</td>
+        </tr>
+        <tr>
+            <td><strong>纯裸K</strong></td>
+            <td>极简/专注价格</td>
+            <td>力度K+支撑压力</td>
+            <td>共振点+反向K线</td>
+        </tr>
+    </table>
+
+    <div style="background: #eee; padding: 20px; border-radius: 8px; margin-top: 30px;">
+        <h3 style="margin-top: 0;">🎯 核心要点总结</h3>
+        <ul>
+            <li><strong>博弈背景：</strong>力度K必须在博弈区后出现才具有指导意义。</li>
+            <li><strong>共振为王：</strong>多周期方向一致（共振）可极大提高胜率。</li>
+            <li><strong>位势一致：</strong>寻找水平共振点作为精准打击位。</li>
+            <li><strong>循序渐进：</strong>建议先熟练均线系统，产生盘感后再移除指标。</li>
+        </ul>
+    </div>
+
+    <p style="text-align: center; color: #95a5a6; margin-top: 50px;">© 2026 多周期交易系统规则库</p>
+
+</body>
+</html>
