@@ -42,19 +42,29 @@
             overflow-x: auto;
         }
         
-        /* 图片占位符样式 */
+        /* 图片容器与交互效果 */
         .image-container {
             background: #e9ecef;
             border: 2px dashed #ced4da;
-            padding: 40px;
+            padding: 20px;
             text-align: center;
             margin: 20px 0;
             border-radius: 10px;
+            cursor: pointer; /* 鼠标变为手型提示可点 */
+            transition: 0.3s;
+        }
+        .image-container:hover {
+            background: #e2e6ea;
+            border-color: #adb5bd;
+        }
+        .image-container img {
+            max-width: 100%;
+            border-radius: 4px;
         }
         .image-caption {
             font-size: 0.9em;
             color: #666;
-            margin-top: -15px;
+            margin-top: 10px;
             margin-bottom: 20px;
             text-align: center;
         }
@@ -68,6 +78,26 @@
             border-radius: 3px;
             font-size: 0.85em;
             margin-bottom: 10px;
+        }
+
+        /* 遮罩层样式 (全屏显示原图) */
+        #lightbox {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+        }
+        #lightbox img {
+            max-width: 95%;
+            max-height: 95%;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -113,9 +143,9 @@
 
     <h3>🔻 第三层进场：5分钟周期（精确进场）</h3>
     
-    <div class="image-container">
-        <img src="https://github.com/ChirsYg/jishi/blob/main/pic/1.jpeg?raw=true" alt="图1-5分钟均线进场规则" style="max-width:100%;">
-        <p>![图1-5分钟均线进场规则](1.jpeg)</p>
+    <div class="image-container" onclick="openLightbox(this)">
+        <img src="https://github.com/ChirsYg/jishi/blob/main/pic/1.jpeg?raw=true" alt="图1-5分钟均线进场规则">
+        <p>📸 点击显示原图</p>
     </div>
     <div class="image-caption">
         <strong>图示说明：</strong>黄线5EMA, 粉线13EMA, 绿线55EMA。标注1-2-3结构，价格触碰绿线并突破粉线进场。
@@ -157,9 +187,9 @@
     <blockquote>🔑 <strong>核心变化：</strong>找到力度K后，即使15/30分钟条件不完全满足也可以进场。</blockquote>
 
     <h3>🔻 力度K线识别</h3>
-    <div class="image-container">
-        <img src="https://github.com/ChirsYg/jishi/blob/main/pic/2.jpeg?raw=true" alt="图2-力度K定义" style="max-width:100%;">
-        <p>![图2-力度K定义](2.jpeg)</p>
+    <div class="image-container" onclick="openLightbox(this)">
+        <img src="https://github.com/ChirsYg/jishi/blob/main/pic/2.jpeg?raw=true" alt="图2-力度K定义">
+        <p>📸 点击显示原图</p>
     </div>
     <div class="image-caption"><strong>图示说明：</strong>博弈区（阴阳交错）后出现的决定性大K线即为力度K。</div>
 
@@ -171,9 +201,9 @@
     </table>
 
     <h3>🔻 过渡阶段进场方法</h3>
-    <div class="image-container">
-        <img src="https://github.com/ChirsYg/jishi/blob/main/pic/3.jpeg?raw=true" alt="图3-15分钟力度K+5分钟均线信号" style="max-width:100%;">
-        <p>![图3-均线过渡到裸K](3.jpeg)</p>
+    <div class="image-container" onclick="openLightbox(this)">
+        <img src="https://github.com/ChirsYg/jishi/blob/main/pic/3.jpeg?raw=true" alt="图3-15分钟力度K+5分钟均线信号">
+        <p>📸 点击显示原图</p>
     </div>
     <p><strong>进场逻辑：</strong>在大周期（15/30min）确定力度K方向，在小周期（5min）按均线规则寻找触碰绿线后的突破信号。此阶段止损设在力度K的高/低点。</p>
 
@@ -181,9 +211,9 @@
     <blockquote>🔑 <strong>核心变化：</strong>删除均线，专注于裸K形态、关键位置（共振点）和力度K。</blockquote>
 
     <h3>🔻 纯裸K进场方法（5分钟）</h3>
-    <div class="image-container">
-        <img src="https://github.com/ChirsYg/jishi/blob/main/pic/4.jpeg?raw=true" alt="图4-纯裸K进场" style="max-width:100%;">
-        <p>![图4-纯裸K进场](4.jpeg)</p>
+    <div class="image-container" onclick="openLightbox(this)">
+        <img src="https://github.com/ChirsYg/jishi/blob/main/pic/4.jpeg?raw=true" alt="图4-纯裸K进场">
+        <p>📸 点击显示原图</p>
     </div>
 
     <table>
@@ -233,6 +263,24 @@
     </div>
 
     <p style="text-align: center; color: #95a5a6; margin-top: 50px;">© 2026 多周期交易系统规则库</p>
+
+    <div id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="大图预览">
+    </div>
+
+    <script>
+        function openLightbox(container) {
+            const imgSrc = container.querySelector('img').src;
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = imgSrc;
+            lightbox.style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+    </script>
 
 </body>
 </html>
